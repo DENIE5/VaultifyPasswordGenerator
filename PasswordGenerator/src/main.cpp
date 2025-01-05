@@ -7,6 +7,11 @@
 #include <d3d11.h>
 #include <tchar.h>
 
+int passwordLength;
+char lowercaseLetters[27] = "abcdefghijklmnopqrstuvwxyz";
+char uppercaseLetters[27] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+char numbers[11] = "0123456789";
+char symbols[31] = "!\"#$%&'()*+,-./:;<=>?@^_`{|}~";
 
 static ID3D11Device*            g_pd3dDevice = nullptr;
 static ID3D11DeviceContext*     g_pd3dDeviceContext = nullptr;
@@ -124,21 +129,16 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
             static float f = 0.0f;
             static int counter = 0;
 
-            ImGui::Begin("Hello, world!");                          // Create a window called "Hello, world!" and append into it.
+            ImGui::Begin("Vaultify");                          
 
-            ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
-            ImGui::Checkbox("Demo Window", &show_demo_window);      // Edit bools storing our window open/close state
-            ImGui::Checkbox("Another Window", &show_another_window);
+            // Password Length
+            ImGui::Text("How many characters would you like the password to be?");
+            ImGui::SliderInt("Password Length", &passwordLength, 1, 20);            
+            
+            // Amount of lowercase letters
 
-            ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
-            ImGui::ColorEdit3("clear color", (float*)&clear_color); // Edit 3 floats representing a color
+            ImGui::Text("How many lowercase letters would you like?");
 
-            if (ImGui::Button("Button"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
-                counter++;
-            ImGui::SameLine();
-            ImGui::Text("counter = %d", counter);
-
-            ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
             ImGui::End();
         }
 
@@ -263,4 +263,13 @@ LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
         return 0;
     }
     return ::DefWindowProcW(hWnd, msg, wParam, lParam);
+}
+
+
+void generatePassword() {
+
+    
+
+
+
 }
