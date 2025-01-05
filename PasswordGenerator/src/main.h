@@ -1,3 +1,5 @@
 #pragma once
 
-void generatePassword();
+std::string generatePassword();
+
+bool regeneratePassword();

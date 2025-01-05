@@ -7,17 +7,20 @@
 #include <d3d11.h>
 #include <tchar.h>
 #include <cstdlib>
+#include <random>
+#include <algorithm>
+#include <string>
 
 int passwordLength;
-char lowercaseLetters[27] = "abcdefghijklmnopqrstuvwxyz";
-char uppercaseLetters[27] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-char numbers[11] = "0123456789";
-char symbols[31] = "!\"#$%&'()*+,-./:;<=>?@^_`{|}~";
+const char lowercaseLetters[27] = "abcdefghijklmnopqrstuvwxyz";
+const char uppercaseLetters[27] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const char numbers[11] = "0123456789";
+const char symbols[31] = "!\"#$%&'()*+,-./:;<=>?@^_`{|}~";
 int numLowercaseLetters;
 int numUppercaseLetters;
 int numNumbers;
 int numSymbols;
-int sumOfChoices;
+std::string currentPassword;
 
 static ID3D11Device*            g_pd3dDevice = nullptr;
 static ID3D11DeviceContext*     g_pd3dDeviceContext = nullptr;
@@ -135,28 +138,31 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
             static float f = 0.0f;
             static int counter = 0;
 
-            ImGui::Begin("Vaultify");                          
-
-            // Password Length
-            ImGui::Text("How many characters would you like the password to be?");
-            ImGui::SliderInt("Password Length", &passwordLength, 1, 20);            
+            ImGui::Begin("Vaultify");                                 
             
             // Amount of lowercase letters
 
-            ImGui::Text("How many lowercase letters would you like?");
+            ImGui::Text("How many lowercase letters would you like?\n\n");
             ImGui::SliderInt("Lowercase Letters", &numLowercaseLetters, 0, 20);
 
 			// Amount of uppercase letters
-			ImGui::Text("How many uppercase letters would you like?");
+			ImGui::Text("How many uppercase letters would you like?\n\n");
 			ImGui::SliderInt("Uppercase Letters", &numUppercaseLetters, 0, 20);
 
 			// Amount of numbers
-			ImGui::Text("How many numbers would you like?");
+			ImGui::Text("How many numbers would you like?\n\n");
 			ImGui::SliderInt("Numbers", &numNumbers, 0, 20);
 
 			// Amount of special characters
-			ImGui::Text("How many special characters would you like?");
+			ImGui::Text("How many special characters would you like?\n\n");
 			ImGui::SliderInt("Special Characters", &numSymbols, 0, 20);
+
+            //assign generated password to currentPassword variable
+            if (ImGui::Button("Generate Password", ImVec2(200, 0))) {
+				currentPassword = generatePassword();
+
+            }
+            ImGui::Text("Generated Password: %s", currentPassword.c_str()); //display generated password once button is clicked
 
 
             ImGui::End();
@@ -278,10 +284,38 @@ LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 }
 
 
-void generatePassword() {
+std::string generatePassword() {
+    std::string password = "";
 
-    
+    // Use a better random number generator
+    std::random_device rd;
+    std::mt19937 gen(rd());
 
+    // Generate characters as before
+    for (int i = 0; i < numLowercaseLetters; ++i) {
+        password += lowercaseLetters[gen() % 26];
+    }
+    for (int i = 0; i < numUppercaseLetters; ++i) {
+        password += uppercaseLetters[gen() % 26];
+    }
+    for (int i = 0; i < numNumbers; ++i) {
+        password += numbers[gen() % 10];
+    }
+    for (int i = 0; i < numSymbols; ++i) {
+        password += symbols[gen() % 31];
+    }
+
+    // Shuffle the entire password string
+    std::shuffle(password.begin(), password.end(), gen);
+
+    return password;
+}
+
+bool regeneratePassword() {
+
+    if (regeneratePassword) {
+        generatePassword();
+    }
 
 
 }
