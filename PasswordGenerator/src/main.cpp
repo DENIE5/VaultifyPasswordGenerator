@@ -149,7 +149,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
             static float f = 0.0f;
             static int counter = 0;
 
-            ImGui::Begin("Vaultify");                                 
+            ImGui::Begin("Vaultify", nullptr, ImGuiWindowFlags_NoTitleBar);                                 
             
             // Amount of lowercase letters
 
