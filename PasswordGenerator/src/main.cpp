@@ -11,17 +11,6 @@
 #include <algorithm>
 #include <string>
 
-int passwordLength;
-const char lowercaseLetters[27] = "abcdefghijklmnopqrstuvwxyz";
-const char uppercaseLetters[27] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-const char numbers[11] = "0123456789";
-const char symbols[31] = "!\"#$%&'()*+,-./:;<=>?@^_`{|}~";
-static int numLowercaseLetters;
-static int numUppercaseLetters;
-static int numNumbers;
-static int numSymbols;
-std::string currentPassword;
-int totalLength = 0;
 
 static ID3D11Device*            g_pd3dDevice = nullptr;
 static ID3D11DeviceContext*     g_pd3dDeviceContext = nullptr;
@@ -40,12 +29,25 @@ LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
+    //variables
+    int passwordLength;
+    const char lowercaseLetters[27] = "abcdefghijklmnopqrstuvwxyz";
+    const char uppercaseLetters[27] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const char numbers[11] = "0123456789";
+    const char symbols[31] = "!\"#$%&'()*+,-./:;<=>?@^_`{|}~";
+    static int numLowercaseLetters;
+    static int numUppercaseLetters;
+    static int numNumbers;
+    static int numSymbols;
+    std::string currentPassword;
+    int totalLength = 0;
+
 
     // Create application window
     //ImGui_ImplWin32_EnableDpiAwareness();
     WNDCLASSEXW wc = { sizeof(wc), CS_CLASSDC, WndProc, 0L, 0L, GetModuleHandle(nullptr), nullptr, nullptr, nullptr, nullptr, L"ImGui Example", nullptr };
     ::RegisterClassExW(&wc);
-    HWND hwnd = ::CreateWindowW(wc.lpszClassName, L"Dear ImGui DirectX11 Example", WS_OVERLAPPEDWINDOW, 100, 100, 1280, 800, nullptr, nullptr, wc.hInstance, nullptr);
+    HWND hwnd = ::CreateWindowW(wc.lpszClassName, L"Vaultify - Password Generator", WS_OVERLAPPEDWINDOW, 100, 100, 1280, 800, nullptr, nullptr, wc.hInstance, nullptr);
 
     // Initialize Direct3D
     if (!CreateDeviceD3D(hwnd))
@@ -134,8 +136,16 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         ImGui_ImplWin32_NewFrame();
         ImGui::NewFrame();
 
-        // 2. Show a simple window that we create ourselves. We use a Begin/End pair to create a named window.
+        RECT rect;
+        GetClientRect(hwnd, &rect);
+
         {
+
+            ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiCond_Always);  // Position at top-left corner
+            ImGui::SetNextWindowSize(ImVec2((float)(rect.right - rect.left), (float)(rect.bottom - rect.top)), ImGuiCond_Always); // Use the full client area size
+
+
+
             static float f = 0.0f;
             static int counter = 0;
 
@@ -160,7 +170,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
             //assign generated password to currentPassword variable
             if (ImGui::Button("Generate Password", ImVec2(200, 0))) {
-				currentPassword = generatePassword();
+				currentPassword = generatePassword(numLowercaseLetters, numUppercaseLetters, numNumbers, numSymbols, 
+                lowercaseLetters, uppercaseLetters, numbers, symbols);
 
             }
             ImGui::Text("Generated Password: %s", currentPassword.c_str()); //display generated password once button is clicked
@@ -293,7 +304,8 @@ LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 }
 
 
-std::string generatePassword() {
+std::string generatePassword(const int numLowercaseLetters, const int numUppercaseLetters, const int numNumbers, const int numSymbols, 
+    const char* lowercaseLetters, const char* uppercaseLetters, const char* numbers, const char* symbols) {
     
     int localLower = numLowercaseLetters;
     int localUpper = numUppercaseLetters;
@@ -308,16 +320,16 @@ std::string generatePassword() {
     std::mt19937 gen(rd());
 
     // Generate characters as before
-    for (int i = 0; i < numLowercaseLetters; ++i) {
+    for (int i = 0; i < localLower; ++i) {
         password += lowercaseLetters[gen() % 26];
     }
-    for (int i = 0; i < numUppercaseLetters; ++i) {
+    for (int i = 0; i < localUpper; ++i) {
         password += uppercaseLetters[gen() % 26];
     }
-    for (int i = 0; i < numNumbers; ++i) {
+    for (int i = 0; i < localNumbers; ++i) {
         password += numbers[gen() % 10];
     }
-    for (int i = 0; i < numSymbols; ++i) {
+    for (int i = 0; i < localSymbols; ++i) {
         password += symbols[gen() % 31];
     }
 
