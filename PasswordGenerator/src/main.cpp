@@ -16,11 +16,12 @@ const char lowercaseLetters[27] = "abcdefghijklmnopqrstuvwxyz";
 const char uppercaseLetters[27] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const char numbers[11] = "0123456789";
 const char symbols[31] = "!\"#$%&'()*+,-./:;<=>?@^_`{|}~";
-int numLowercaseLetters;
-int numUppercaseLetters;
-int numNumbers;
-int numSymbols;
+static int numLowercaseLetters;
+static int numUppercaseLetters;
+static int numNumbers;
+static int numSymbols;
 std::string currentPassword;
+int totalLength = 0;
 
 static ID3D11Device*            g_pd3dDevice = nullptr;
 static ID3D11DeviceContext*     g_pd3dDeviceContext = nullptr;
@@ -143,19 +144,19 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
             // Amount of lowercase letters
 
             ImGui::Text("How many lowercase letters would you like?\n\n");
-            ImGui::SliderInt("Lowercase Letters", &numLowercaseLetters, 0, 20);
+            ImGui::SliderInt("Lowercase Letters", &numLowercaseLetters, 0, 10);
 
 			// Amount of uppercase letters
 			ImGui::Text("How many uppercase letters would you like?\n\n");
-			ImGui::SliderInt("Uppercase Letters", &numUppercaseLetters, 0, 20);
+			ImGui::SliderInt("Uppercase Letters", &numUppercaseLetters, 0, 10);
 
 			// Amount of numbers
 			ImGui::Text("How many numbers would you like?\n\n");
-			ImGui::SliderInt("Numbers", &numNumbers, 0, 20);
+			ImGui::SliderInt("Numbers", &numNumbers, 0, 10);
 
 			// Amount of special characters
 			ImGui::Text("How many special characters would you like?\n\n");
-			ImGui::SliderInt("Special Characters", &numSymbols, 0, 20);
+			ImGui::SliderInt("Special Characters", &numSymbols, 0, 10);
 
             //assign generated password to currentPassword variable
             if (ImGui::Button("Generate Password", ImVec2(200, 0))) {
@@ -164,6 +165,14 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
             }
             ImGui::Text("Generated Password: %s", currentPassword.c_str()); //display generated password once button is clicked
 
+
+            //debugging
+            ImGui::Text("Lowercase Letters: %d", numLowercaseLetters);
+            ImGui::Text("Uppercase Letters: %d", numUppercaseLetters);
+            ImGui::Text("Numbers: %d", numNumbers);
+            ImGui::Text("Special Characters: %d", numSymbols);
+            totalLength = numLowercaseLetters + numUppercaseLetters + numNumbers + numSymbols;
+            ImGui::Text("Total Password Length: %d", totalLength);
 
             ImGui::End();
         }
@@ -285,6 +294,13 @@ LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
 
 std::string generatePassword() {
+    
+    int localLower = numLowercaseLetters;
+    int localUpper = numUppercaseLetters;
+    int localNumbers = numNumbers;
+    int localSymbols = numSymbols;
+
+
     std::string password = "";
 
     // Use a better random number generator
@@ -309,13 +325,4 @@ std::string generatePassword() {
     std::shuffle(password.begin(), password.end(), gen);
 
     return password;
-}
-
-bool regeneratePassword() {
-
-    if (regeneratePassword) {
-        generatePassword();
-    }
-
-
 }
