@@ -149,42 +149,49 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
             static float f = 0.0f;
             static int counter = 0;
 
-            ImGui::Begin("Vaultify", nullptr, ImGuiWindowFlags_NoTitleBar);                                 
+            ImGui::Begin("Vaultify", nullptr, ImGuiWindowFlags_NoTitleBar);     //ImGuiWindowFlags_NoTitleBar  - removes native imgui titlebar                      
             
             // Amount of lowercase letters
 
-            ImGui::Text("How many lowercase letters would you like?\n\n");
+            ImGui::SetCursorPos(ImVec2(404,137.5));
+            ImGui::PushItemWidth(352);
+            static int i12 = 0;
             ImGui::SliderInt("Lowercase Letters", &numLowercaseLetters, 0, 10);
+            ImGui::PopItemWidth();
 
 			// Amount of uppercase letters
-			ImGui::Text("How many uppercase letters would you like?\n\n");
-			ImGui::SliderInt("Uppercase Letters", &numUppercaseLetters, 0, 10);
+            ImGui::SetCursorPos(ImVec2(404,234.5));
+            ImGui::PushItemWidth(352);
+            static int i14 = 0;
+			ImGui::SliderInt("Uppercase Letters", & numUppercaseLetters, 0, 10);
+            ImGui::PopItemWidth();
 
 			// Amount of numbers
-			ImGui::Text("How many numbers would you like?\n\n");
+            ImGui::SetCursorPos(ImVec2(404,338.5));
+            ImGui::PushItemWidth(352);
+            static int i16 = 0;
 			ImGui::SliderInt("Numbers", &numNumbers, 0, 10);
+            ImGui::PopItemWidth();
 
 			// Amount of special characters
-			ImGui::Text("How many special characters would you like?\n\n");
+            ImGui::SetCursorPos(ImVec2(404,428.5));
+            ImGui::PushItemWidth(352);
+            static int i19 = 0;
 			ImGui::SliderInt("Special Characters", &numSymbols, 0, 10);
+            ImGui::PopItemWidth();
 
             //assign generated password to currentPassword variable
-            if (ImGui::Button("Generate Password", ImVec2(200, 0))) {
+            ImGui::SetCursorPos(ImVec2(508,479));
+            if (ImGui::Button("Generate Password", ImVec2(144, 56))) {
 				currentPassword = generatePassword(numLowercaseLetters, numUppercaseLetters, numNumbers, numSymbols, 
                 lowercaseLetters, uppercaseLetters, numbers, symbols);
 
             }
+            ImGui::SetCursorPos(ImVec2(510,554.5));
             ImGui::Text("Generated Password: %s", currentPassword.c_str()); //display generated password once button is clicked
 
-
-            //debugging
-            ImGui::Text("Lowercase Letters: %d", numLowercaseLetters);
-            ImGui::Text("Uppercase Letters: %d", numUppercaseLetters);
-            ImGui::Text("Numbers: %d", numNumbers);
-            ImGui::Text("Special Characters: %d", numSymbols);
-            totalLength = numLowercaseLetters + numUppercaseLetters + numNumbers + numSymbols;
-            ImGui::Text("Total Password Length: %d", totalLength);
-
+            ImGui::SetCursorPos(ImVec2(512,587.5));
+            ImGui::Button("Copy to Clipboard", ImVec2(136,19));
             ImGui::End();
         }
 
