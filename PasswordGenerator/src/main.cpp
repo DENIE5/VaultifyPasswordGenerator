@@ -189,7 +189,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
             }
 
             ImGui::SetCursorPos(ImVec2(850,544.5));
-            ImGui::Button("Copy to Clipboard", ImVec2(144,19));
+            if (ImGui::Button("Copy to Clipboard", ImVec2(144, 19))) {
+                ImGui::SetClipboardText(currentPassword.c_str());
+            }
 
             ImGui::SetCursorPos(ImVec2(850,587.5));
             ImGui::Text("Generated Password: %s", currentPassword.c_str()); //display generated password once button is clicked
