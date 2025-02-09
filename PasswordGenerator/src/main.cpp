@@ -69,9 +69,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
 
     // Setup Dear ImGui style
-    ImGui::StyleColorsDark();
-    //ImGui::StyleColorsLight();
-
+    ImGuiStyle* style = &ImGui::GetStyle();
+    ImVec4* colors = style->Colors;
+    
+    colors[ImGuiCol_WindowBg] = ImVec4(5.00f / 255.00f, 33.00f / 255.00f, 77.00f / 255.00f, 0.90f);
     // Setup Platform/Renderer backends
     ImGui_ImplWin32_Init(hwnd);
     ImGui_ImplDX11_Init(g_pd3dDevice, g_pd3dDeviceContext);
@@ -149,35 +150,35 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
             static float f = 0.0f;
             static int counter = 0;
 
-            ImGui::Begin("Vaultify", nullptr, ImGuiWindowFlags_NoTitleBar);     //ImGuiWindowFlags_NoTitleBar  - removes native imgui titlebar
+            ImGui::Begin("Vaultify", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);     //ImGuiWindowFlags_NoTitleBar  - removes native imgui titlebar
             
             // Amount of lowercase letters
 
             ImGui::SetCursorPos(ImVec2(750,137.5));
             ImGui::PushItemWidth(352);
             static int i12 = 0;
-            ImGui::SliderInt("Lowercase Letters", &numLowercaseLetters, 0, 10);
+            ImGui::SliderInt(" Lowercase Letters", &numLowercaseLetters, 0, 10);
             ImGui::PopItemWidth();
 
 			// Amount of uppercase letters
             ImGui::SetCursorPos(ImVec2(750,234.5));
             ImGui::PushItemWidth(352);
             static int i14 = 0;
-			ImGui::SliderInt("Uppercase Letters", & numUppercaseLetters, 0, 10);
+			ImGui::SliderInt(" Uppercase Letters", & numUppercaseLetters, 0, 10);
             ImGui::PopItemWidth();
 
 			// Amount of numbers
             ImGui::SetCursorPos(ImVec2(750,338.5));
             ImGui::PushItemWidth(352);
             static int i16 = 0;
-			ImGui::SliderInt("Numbers", &numNumbers, 0, 10);
+			ImGui::SliderInt(" Numbers", &numNumbers, 0, 10);
             ImGui::PopItemWidth();
 
 			// Amount of special characters
             ImGui::SetCursorPos(ImVec2(750,428.5));
             ImGui::PushItemWidth(352);
             static int i19 = 0;
-			ImGui::SliderInt("Special Characters", &numSymbols, 0, 10);
+			ImGui::SliderInt(" Special Characters", &numSymbols, 0, 10);
             ImGui::PopItemWidth();
 
             //assign generated password to currentPassword variable
