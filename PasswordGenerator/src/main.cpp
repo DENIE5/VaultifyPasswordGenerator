@@ -1,5 +1,6 @@
 #include <iostream>
 #include <windows.h>
+#include <conio.h> 
 #include "main.h"
 #include "..\ext\imgui\imgui.h"
 #include "..\ext\imgui\imgui_impl_dx11.h"
@@ -29,16 +30,17 @@ LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
+
     //variables
     int passwordLength;
     const char lowercaseLetters[27] = "abcdefghijklmnopqrstuvwxyz";
     const char uppercaseLetters[27] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     const char numbers[11] = "0123456789";
     const char symbols[31] = "!\"#$%&'()*+,-./:;<=>?@^_`{|}~";
-    static int numLowercaseLetters;
-    static int numUppercaseLetters;
-    static int numNumbers;
-    static int numSymbols;
+    static int numLowercaseLetters = 0;
+    static int numUppercaseLetters = 0;
+    static int numNumbers = 0;
+    static int numSymbols = 0;
     std::string currentPassword;
     int totalLength = 0;
 
@@ -352,9 +354,6 @@ std::string generatePassword(const int numLowercaseLetters, const int numUpperca
     for (int i = 0; i < localSymbols; ++i) {
         password += symbols[gen() % 31];
     }
-
-    // Shuffle the entire password string
-    std::shuffle(password.begin(), password.end(), gen);
 
     return password;
 }
