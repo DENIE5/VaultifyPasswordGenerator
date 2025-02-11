@@ -33,10 +33,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
     //variables
     int passwordLength;
-    const char lowercaseLetters[27] = "abcdefghijklmnopqrstuvwxyz";
-    const char uppercaseLetters[27] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    const char numbers[11] = "0123456789";
-    const char symbols[31] = "!\"#$%&'()*+,-./:;<=>?@^_`{|}~";
+    const char lowercaseLetters[] = "abcdefghijklmnopqrstuvwxyz";
+    const char uppercaseLetters[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const char numbers[] = "0123456789";
+    const char symbols[] = "!\"#$%&'()*+,-./:;<=>?@^_`{|}~\\";
     static int numLowercaseLetters = 0;
     static int numUppercaseLetters = 0;
     static int numNumbers = 0;
@@ -341,7 +341,7 @@ std::string generatePassword(const int numLowercaseLetters, const int numUpperca
     std::random_device rd;
     std::mt19937 gen(rd());
 
-    // Generate characters as before
+    
     for (int i = 0; i < localLower; ++i) {
         password += lowercaseLetters[gen() % 26];
     }
@@ -352,8 +352,8 @@ std::string generatePassword(const int numLowercaseLetters, const int numUpperca
         password += numbers[gen() % 10];
     }
     for (int i = 0; i < localSymbols; ++i) {
-        password += symbols[gen() % 31];
+        password += symbols[gen() % 30];
     }
-
+    
     return password;
 }
