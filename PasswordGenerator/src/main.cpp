@@ -354,6 +354,6 @@ std::string generatePassword(const int numLowercaseLetters, const int numUpperca
     for (int i = 0; i < localSymbols; ++i) {
         password += symbols[gen() % 30];
     }
-    
+    random_shuffle(password.begin(), password.end());
     return password;
 }
