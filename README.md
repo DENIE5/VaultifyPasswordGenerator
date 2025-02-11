@@ -26,62 +26,95 @@ Below are important snippets of the code that demonstrate how the password gener
 The `generatePassword` function creates the password by selecting characters from predefined arrays for lowercase letters, uppercase letters, numbers, and symbols.
 
 ```cpp
-std::string generatePassword() {
+std::string generatePassword(const int numLowercaseLetters, const int numUppercaseLetters, const int numNumbers, const int numSymbols, 
+    const char* lowercaseLetters, const char* uppercaseLetters, const char* numbers, const char* symbols) {
+    
+    int localLower = numLowercaseLetters;
+    int localUpper = numUppercaseLetters;
+    int localNumbers = numNumbers;
+    int localSymbols = numSymbols;
+
+
     std::string password = "";
 
     // Use a better random number generator
     std::random_device rd;
     std::mt19937 gen(rd());
 
-    // Generate characters as before
-    for (int i = 0; i < numLowercaseLetters; ++i) {
+    
+    for (int i = 0; i < localLower; ++i) {
         password += lowercaseLetters[gen() % 26];
     }
-    for (int i = 0; i < numUppercaseLetters; ++i) {
+    for (int i = 0; i < localUpper; ++i) {
         password += uppercaseLetters[gen() % 26];
     }
-    for (int i = 0; i < numNumbers; ++i) {
+    for (int i = 0; i < localNumbers; ++i) {
         password += numbers[gen() % 10];
     }
-    for (int i = 0; i < numSymbols; ++i) {
-        password += symbols[gen() % 31];
+    for (int i = 0; i < localSymbols; ++i) {
+        password += symbols[gen() % 30];
     }
-
-    // Shuffle the entire password string
-    std::shuffle(password.begin(), password.end(), gen);
-
+    random_shuffle(password.begin(), password.end());
     return password;
 }
 ```
 
 ## ImGui GUI Setup
 The ImGui interface is used to allow the user to choose how many characters of each type (lowercase, uppercase, numeric, special characters) they want to include in the generated password.
-
 ```cpp
-ImGui::Begin("Vaultify");
+            ImGui::Begin("Vaultify", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);    
+            
+            ImGui::PushFont(mainFont);
 
-ImGui::Text("How many lowercase letters would you like?\n\n");
-ImGui::SliderInt("Lowercase Letters", &numLowercaseLetters, 0, 20);
+            ImGui::SetCursorPos(ImVec2(200,137.5));
+            ImGui::PushItemWidth(352);
+            static int i12 = 0;
+            ImGui::SliderInt(" Lowercase Letters", &numLowercaseLetters, 0, 10);
+            ImGui::PopItemWidth();
 
-ImGui::Text("How many uppercase letters would you like?\n\n");
-ImGui::SliderInt("Uppercase Letters", &numUppercaseLetters, 0, 20);
+			// Amount of uppercase letters
+            ImGui::SetCursorPos(ImVec2(200,234.5));
+            ImGui::PushItemWidth(352);
+            static int i14 = 0;
+			ImGui::SliderInt(" Uppercase Letters", & numUppercaseLetters, 0, 10);
+            ImGui::PopItemWidth();
 
-ImGui::Text("How many numbers would you like?\n\n");
-ImGui::SliderInt("Numbers", &numNumbers, 0, 20);
+			// Amount of numbers
+            ImGui::SetCursorPos(ImVec2(200,338.5));
+            ImGui::PushItemWidth(352);
+            static int i16 = 0;
+			ImGui::SliderInt(" Numbers", &numNumbers, 0, 10);
+            ImGui::PopItemWidth();
 
-ImGui::Text("How many special characters would you like?\n\n");
-ImGui::SliderInt("Special Characters", &numSymbols, 0, 20);
+			// Amount of special characters
+            ImGui::SetCursorPos(ImVec2(200,428.5));
+            ImGui::PushItemWidth(352);
+            static int i19 = 0;
+			ImGui::SliderInt(" Special Characters", &numSymbols, 0, 10);
+            ImGui::PopItemWidth();
 
-// Button to generate password
-if (ImGui::Button("Generate Password", ImVec2(200, 0))) {
-    currentPassword = generatePassword();
-}
+            //assign generated password to currentPassword variable
+            ImGui::SetCursorPos(ImVec2(1000,300));
+            if (ImGui::Button("Generate Password", ImVec2(400, 56))) {
+				currentPassword = generatePassword(numLowercaseLetters, numUppercaseLetters, numNumbers, numSymbols, 
+                lowercaseLetters, uppercaseLetters, numbers, symbols);
 
-ImGui::Text("Generated Password: %s", currentPassword.c_str()); // Display generated password once button is clicked
+            }
 
-ImGui::End();
+            ImGui::SetCursorPos(ImVec2(1000,400));
+            if (ImGui::Button("Copy to Clipboard", ImVec2(400, 56))) {
+                ImGui::SetClipboardText(currentPassword.c_str());
+            }
+
+            ImGui::SetCursorPos(ImVec2(1000,200));
+            ImGui::Text("Generated Password: %s", currentPassword.c_str()); //display generated password once button is clicked
+
+            ImGui::SetCursorPos(ImVec2(30,950));
+            ImGui::Text("Made by Yanis");
+            ImGui::PopFont();
+            ImGui::End();
+        }
 ```
-
 ## Acknowledgements
 
 - **ImGui**: A powerful and easy-to-use GUI library, used here for creating the user interface. Check out ImGui's [GitHub Repository](https://github.com/ocornut/imgui).
