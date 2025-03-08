@@ -37,12 +37,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     const char uppercaseLetters[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     const char numbers[] = "0123456789";
     const char symbols[] = "!\"#$%&'()*+,-./:;<=>?@^_`{|}~\\";
-    static int numLowercaseLetters = 0;
-    static int numUppercaseLetters = 0;
-    static int numNumbers = 0;
-    static int numSymbols = 0;
+    static bool includeLowercase = false;
+    static bool includeUppercase = false;
+    static bool includeNumbers = false;
+    static bool includeSymbols = false;
     std::string currentPassword;
-    int totalLength = 0;
+    int totalLength = 3;
 
 
     // Create application window
@@ -164,39 +164,44 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
             ImGui::SetCursorPos(ImVec2(200,137.5));
             ImGui::PushItemWidth(352);
             static int i12 = 0;
-            ImGui::SliderInt(" Lowercase Letters", &numLowercaseLetters, 0, 10);
+            ImGui::Checkbox(" Lowercase Letters", &includeLowercase);
             ImGui::PopItemWidth();
 
-			// Amount of uppercase letters
+			
             ImGui::SetCursorPos(ImVec2(200,234.5));
             ImGui::PushItemWidth(352);
             static int i14 = 0;
-			ImGui::SliderInt(" Uppercase Letters", & numUppercaseLetters, 0, 10);
+            ImGui::Checkbox(" Uppercase Letters", &includeUppercase);
             ImGui::PopItemWidth();
 
-			// Amount of numbers
+			
             ImGui::SetCursorPos(ImVec2(200,338.5));
             ImGui::PushItemWidth(352);
             static int i16 = 0;
-			ImGui::SliderInt(" Numbers", &numNumbers, 0, 10);
+           ImGui::Checkbox(" Numbers", &includeNumbers);
+            
             ImGui::PopItemWidth();
 
-			// Amount of special characters
+			
             ImGui::SetCursorPos(ImVec2(200,428.5));
             ImGui::PushItemWidth(352);
             static int i19 = 0;
-			ImGui::SliderInt(" Special Characters", &numSymbols, 0, 10);
+            ImGui::Checkbox(" Symbols", &includeSymbols);
             ImGui::PopItemWidth();
 
             //assign generated password to currentPassword variable
             ImGui::SetCursorPos(ImVec2(1000,300));
             if (ImGui::Button("Generate Password", ImVec2(400, 56))) {
-				currentPassword = generatePassword(numLowercaseLetters, numUppercaseLetters, numNumbers, numSymbols, 
-                lowercaseLetters, uppercaseLetters, numbers, symbols);
+				currentPassword = generatePassword(includeLowercase, includeUppercase, includeNumbers, includeSymbols,
+                lowercaseLetters, uppercaseLetters, numbers, symbols, totalLength);
 
             }
-
+            ImGui::SetCursorPos(ImVec2(200,500));
+            ImGui::PushItemWidth(352);
+            ImGui::SliderInt("Password Length", &totalLength, 3, 20);
+            ImGui::PopItemWidth();
             ImGui::SetCursorPos(ImVec2(1000,400));
+
             if (ImGui::Button("Copy to Clipboard", ImVec2(400, 56))) {
                 ImGui::SetClipboardText(currentPassword.c_str());
             }
@@ -326,14 +331,8 @@ LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 }
 
 
-std::string generatePassword(const int numLowercaseLetters, const int numUppercaseLetters, const int numNumbers, const int numSymbols, 
-    const char* lowercaseLetters, const char* uppercaseLetters, const char* numbers, const char* symbols) {
+std::string generatePassword(bool includeLowercase, bool includeUppercase, bool includeNumbers, bool includeSymbols,const char* lowercaseLetters, const char* uppercaseLetters, const char* numbers, const char* symbols, int totalLength) {
     
-    int localLower = numLowercaseLetters;
-    int localUpper = numUppercaseLetters;
-    int localNumbers = numNumbers;
-    int localSymbols = numSymbols;
-
 
     std::string password = "";
 
@@ -341,19 +340,32 @@ std::string generatePassword(const int numLowercaseLetters, const int numUpperca
     std::random_device rd;
     std::mt19937 gen(rd());
 
-    
-    for (int i = 0; i < localLower; ++i) {
-        password += lowercaseLetters[gen() % 26];
-    }
-    for (int i = 0; i < localUpper; ++i) {
-        password += uppercaseLetters[gen() % 26];
-    }
-    for (int i = 0; i < localNumbers; ++i) {
-        password += numbers[gen() % 10];
-    }
-    for (int i = 0; i < localSymbols; ++i) {
+    if(includeLowercase) {
+		for (int i = 0; i < totalLength; ++i) {
+			password += lowercaseLetters[gen() % 26];
+		}
+	}
+	if(includeUppercase) {
+		for (int i = 0; i < totalLength; ++i) {
+			password += uppercaseLetters[gen() % 26];
+		}
+	}
+	if(includeNumbers) {
+		for (int i = 0; i < totalLength; ++i) {
+			password += numbers[gen() % 10];
+		}
+	}
+
+
+    for (int i = 0; i < totalLength; ++i) {
         password += symbols[gen() % 30];
     }
+
+    if (password.size() > totalLength) {
+        password = password.substr(0, totalLength);
+    }
+
+
     random_shuffle(password.begin(), password.end());
     return password;
 }
