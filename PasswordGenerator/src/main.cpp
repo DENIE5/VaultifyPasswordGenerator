@@ -161,50 +161,51 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
             
             ImGui::PushFont(mainFont);
 
-            ImGui::SetCursorPos(ImVec2(200,137.5));
+            ImGui::SetCursorPos(ImVec2(200,140));
             ImGui::PushItemWidth(352);
             static int i12 = 0;
             ImGui::SliderInt(" Lowercase Letters", &numLowercaseLetters, 0, 10);
             ImGui::PopItemWidth();
 
 			// Amount of uppercase letters
-            ImGui::SetCursorPos(ImVec2(200,234.5));
+            ImGui::SetCursorPos(ImVec2(200,240));
             ImGui::PushItemWidth(352);
             static int i14 = 0;
 			ImGui::SliderInt(" Uppercase Letters", & numUppercaseLetters, 0, 10);
             ImGui::PopItemWidth();
 
 			// Amount of numbers
-            ImGui::SetCursorPos(ImVec2(200,338.5));
+            ImGui::SetCursorPos(ImVec2(200,340));
             ImGui::PushItemWidth(352);
             static int i16 = 0;
 			ImGui::SliderInt(" Numbers", &numNumbers, 0, 10);
             ImGui::PopItemWidth();
 
 			// Amount of special characters
-            ImGui::SetCursorPos(ImVec2(200,428.5));
+            ImGui::SetCursorPos(ImVec2(200,440));
             ImGui::PushItemWidth(352);
             static int i19 = 0;
 			ImGui::SliderInt(" Special Characters", &numSymbols, 0, 10);
             ImGui::PopItemWidth();
 
             //assign generated password to currentPassword variable
-            ImGui::SetCursorPos(ImVec2(1000,300));
+            ImGui::SetCursorPos(ImVec2(1000,240));
             if (ImGui::Button("Generate Password", ImVec2(400, 56))) {
 				currentPassword = generatePassword(numLowercaseLetters, numUppercaseLetters, numNumbers, numSymbols, 
                 lowercaseLetters, uppercaseLetters, numbers, symbols);
 
             }
 
-            ImGui::SetCursorPos(ImVec2(1000,400));
+            ImGui::SetCursorPos(ImVec2(1000,340));
             if (ImGui::Button("Copy to Clipboard", ImVec2(400, 56))) {
                 ImGui::SetClipboardText(currentPassword.c_str());
             }
 
-            ImGui::SetCursorPos(ImVec2(1000,200));
+            ImGui::SetCursorPos(ImVec2(1000, 140));
             ImGui::Text("Generated Password: %s", currentPassword.c_str()); //display generated password once button is clicked
 
-            if(ImGui::Button("Save Password")) {
+            ImGui::SetCursorPos(ImVec2(1000, 440));
+            if(ImGui::Button("Save Password", ImVec2(400, 56))) {
                 savePassword(currentPassword);
             }
 
