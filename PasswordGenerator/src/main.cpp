@@ -364,7 +364,7 @@ std::string generatePassword(const int numLowercaseLetters, const int numUpperca
 
 void savePassword(std::string currentPassword) {
 
-    std::ofstream file("SavedPasswords.txt");
-    file << currentPassword;
+    std::ofstream file("SavedPasswords.txt", std::fstream::app);
+    file << currentPassword << std::endl;
     file.close();
 }
