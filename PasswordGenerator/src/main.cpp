@@ -205,7 +205,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
             ImGui::Text("Generated Password: %s", currentPassword.c_str()); //display generated password once button is clicked
 
             ImGui::SetCursorPos(ImVec2(30,950));
-            ImGui::Text("Made by Yanis");
+            ImGui::Text("Made by @Plowh");
             ImGui::PopFont();
             ImGui::End();
         }
