@@ -11,7 +11,7 @@
 #include <random>
 #include <algorithm>
 #include <string>
-
+#include <fstream>
 
 static ID3D11Device*            g_pd3dDevice = nullptr;
 static ID3D11DeviceContext*     g_pd3dDeviceContext = nullptr;
@@ -204,6 +204,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
             ImGui::SetCursorPos(ImVec2(1000,200));
             ImGui::Text("Generated Password: %s", currentPassword.c_str()); //display generated password once button is clicked
 
+            if(ImGui::Button("Save Password")) {
+                savePassword(currentPassword);
+            }
+
             ImGui::SetCursorPos(ImVec2(30,950));
             ImGui::Text("Made by @Plowh");
             ImGui::PopFont();
@@ -356,4 +360,11 @@ std::string generatePassword(const int numLowercaseLetters, const int numUpperca
     }
     random_shuffle(password.begin(), password.end());
     return password;
+}
+
+void savePassword(std::string currentPassword) {
+
+    std::ofstream file("SavedPasswords.txt");
+    file << currentPassword;
+    file.close();
 }
