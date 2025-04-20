@@ -369,13 +369,25 @@ LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
             return 0;
         break;
     case WM_NCHITTEST:
-        return HTCAPTION;
+        // Only return HTCAPTION if the mouse is in the title bar region
+        if (IsInTitleBar(hWnd, lParam))
+            return HTCAPTION;
         break;
     case WM_DESTROY:
         ::PostQuitMessage(0);
         return 0;
     }
     return ::DefWindowProcW(hWnd, msg, wParam, lParam);
+}
+
+bool IsInTitleBar(HWND hwnd, LPARAM lParam)
+{
+    RECT rect;
+    GetWindowRect(hwnd, &rect);
+    POINT pt = { LOWORD(lParam), HIWORD(lParam) };
+
+    // Check if the mouse is in the non-client area (title bar)
+    return (pt.y <= rect.top + 20);  // Adjust '20' to your desired title bar height
 }
 
 
