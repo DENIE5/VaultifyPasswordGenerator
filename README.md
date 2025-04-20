@@ -14,13 +14,9 @@ Vaultify is a password generator tool that allows users to customize the length 
 - DirectX 11 SDK
 - ImGui Library
 
-## Setup and Usage
-### 1. Setting Up ImGui and DirectX 11
-Ensure that the necessary ImGui files and DirectX 11 SDK are included in your project directory. Your project should link against the ImGui and DirectX libraries for rendering the GUI and managing device context.
+## Code Overview
 
-### 2. Code Overview
-
-Below are important snippets of the code that demonstrate how the password generator works:
+Below are important snippets of the code that demonstrate how the program works:
 
 #### Main Password Generation Logic
 The `generatePassword` function creates the password by selecting characters from predefined arrays for lowercase letters, uppercase letters, numbers, and symbols.
@@ -58,61 +54,111 @@ std::string generatePassword(const int numLowercaseLetters, const int numUpperca
     return password;
 }
 ```
+## File Saving
+
+You can save your password to a file now. The passwords will keep being written into the same file so you don't have 20 different files for all your passwords.
+```cpp
+	void savePassword(std::string currentPassword) {
+
+    std::ofstream file("SavedPasswords.txt", std::fstream::app);
+    file << currentPassword << std::endl;
+    file.close();
+}
+```
 
 ## ImGui GUI Setup
 The ImGui interface is used to allow the user to choose how many characters of each type (lowercase, uppercase, numeric, special characters) they want to include in the generated password.
 ```cpp
-            ImGui::Begin("Vaultify", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);    
-            
-            ImGui::PushFont(mainFont);
+                ImGui::Begin("Vaultify", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar);     //ImGuiWindowFlags_NoTitleBar  - removes native imgui titlebar
+    
+    
+    ImGui::PushFont(mainFont);
 
-            ImGui::SetCursorPos(ImVec2(200,137.5));
-            ImGui::PushItemWidth(352);
-            static int i12 = 0;
-            ImGui::SliderInt(" Lowercase Letters", &numLowercaseLetters, 0, 10);
-            ImGui::PopItemWidth();
+    ImGui::PushStyleColor(ImGuiCol_FrameBg, track);        
+    ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, track_hover);  
+    ImGui::PushStyleColor(ImGuiCol_FrameBgActive, track_active); 
+    ImGui::PushStyleColor(ImGuiCol_SliderGrab, grab);         
+    ImGui::PushStyleColor(ImGuiCol_SliderGrabActive, grab_active);
 
-			// Amount of uppercase letters
-            ImGui::SetCursorPos(ImVec2(200,234.5));
-            ImGui::PushItemWidth(352);
-            static int i14 = 0;
-			ImGui::SliderInt(" Uppercase Letters", & numUppercaseLetters, 0, 10);
-            ImGui::PopItemWidth();
+   
+    ImGui::SetCursorPos(ImVec2(50,50));
+    ImGui::PushItemWidth(200);
+    static int i12 = 0;
+    ImGui::SliderInt(" Lowercase", &numLowercaseLetters, 0, 5);
+    ImGui::PopItemWidth();
 
-			// Amount of numbers
-            ImGui::SetCursorPos(ImVec2(200,338.5));
-            ImGui::PushItemWidth(352);
-            static int i16 = 0;
-			ImGui::SliderInt(" Numbers", &numNumbers, 0, 10);
-            ImGui::PopItemWidth();
+	// Amount of uppercase letters
+    ImGui::SetCursorPos(ImVec2(50,100));
+    ImGui::PushItemWidth(200);
+    static int i14 = 0;
+	ImGui::SliderInt(" Uppercase", & numUppercaseLetters, 0, 5);
+    ImGui::PopItemWidth();
 
-			// Amount of special characters
-            ImGui::SetCursorPos(ImVec2(200,428.5));
-            ImGui::PushItemWidth(352);
-            static int i19 = 0;
-			ImGui::SliderInt(" Special Characters", &numSymbols, 0, 10);
-            ImGui::PopItemWidth();
+	// Amount of numbers
+    ImGui::SetCursorPos(ImVec2(50,150));
+    ImGui::PushItemWidth(200);
+    static int i16 = 0;
+	ImGui::SliderInt(" Numbers", &numNumbers, 0, 5);
+    ImGui::PopItemWidth();
 
-            //assign generated password to currentPassword variable
-            ImGui::SetCursorPos(ImVec2(1000,300));
-            if (ImGui::Button("Generate Password", ImVec2(400, 56))) {
-				currentPassword = generatePassword(numLowercaseLetters, numUppercaseLetters, numNumbers, numSymbols, 
-                lowercaseLetters, uppercaseLetters, numbers, symbols);
+	// Amount of special characters
+    ImGui::SetCursorPos(ImVec2(50,200));
+    ImGui::PushItemWidth(200);
+    
+    static int i19 = 0;
+	ImGui::SliderInt(" Special", &numSymbols, 0, 5);
+    ImGui::PopItemWidth();
 
-            }
+    ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.2f, 0.2f, 0.2f, 1));
+    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.3f, 0.3f, 0.3f, 1));
+    ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.3f, 0.3f, 0.3f, 1));
 
-            ImGui::SetCursorPos(ImVec2(1000,400));
-            if (ImGui::Button("Copy to Clipboard", ImVec2(400, 56))) {
-                ImGui::SetClipboardText(currentPassword.c_str());
-            }
+    ImGui::SetCursorPos(ImVec2(870, 5));
+    if (ImGui::Button("X", ImVec2(30, 30))) {
+        PostQuitMessage(0); 
+    }
 
-            ImGui::SetCursorPos(ImVec2(1000,200));
-            ImGui::Text("Generated Password: %s", currentPassword.c_str()); //display generated password once button is clicked
+   
 
-            ImGui::SetCursorPos(ImVec2(30,950));
-            ImGui::Text("Made by Yanis");
-            ImGui::PopFont();
-            ImGui::End();
+    ImGui::PopStyleColor(3);
+
+    ImGui::PushStyleColor(ImGuiCol_Button, btn);
+    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, btn_hover);
+
+    //assign generated password to currentPassword variable
+    ImGui::SetCursorPos(ImVec2(500,100));
+    if (ImGui::Button("Generate", ImVec2(200, 30))) {
+		currentPassword = generatePassword(numLowercaseLetters, numUppercaseLetters, numNumbers, numSymbols, 
+        lowercaseLetters, uppercaseLetters, numbers, symbols);
+
+    }
+
+    ImGui::SetCursorPos(ImVec2(500,150));
+    if (ImGui::Button("Copy to Clipboard", ImVec2(200, 30))) {
+        ImGui::SetClipboardText(currentPassword.c_str());
+    }
+
+    ImGui::SetCursorPos(ImVec2(500, 50));
+    ImGui::Text("Generated Password: %s", currentPassword.c_str()); //display generated password once button is clicked
+
+    ImGui::SetCursorPos(ImVec2(500, 200));
+    if(ImGui::Button("Save Password", ImVec2(200, 30))) {
+        savePassword(currentPassword);
+    }
+
+    ImGui::SetCursorPos(ImVec2(50,425));
+    ImGui::Text("Made by @Plowh");
+
+    ImGui::PopFont();
+    ImGui::PopStyleColor();
+    ImGui::PopStyleColor();
+    ImGui::PopStyleColor();
+    ImGui::PopStyleColor();
+    ImGui::PopStyleColor();
+    ImGui::PopStyleColor();
+    ImGui::PopStyleColor();
+    ImGui::End();
+}
         }
 ```
 ## Acknowledgements
