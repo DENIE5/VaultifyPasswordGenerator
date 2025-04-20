@@ -31,6 +31,8 @@ LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
 
+   
+
     //variables
     int passwordLength;
     const char lowercaseLetters[] = "abcdefghijklmnopqrstuvwxyz";
@@ -178,9 +180,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
             ImGui::PushStyleColor(ImGuiCol_SliderGrab, grab);         
             ImGui::PushStyleColor(ImGuiCol_SliderGrabActive, grab_active);
 
-            ImGui::PushStyleColor(ImGuiCol_Button, btn);
-            ImGui::PushStyleColor(ImGuiCol_ButtonHovered, btn_hover);
-
+           
             ImGui::SetCursorPos(ImVec2(50,50));
             ImGui::PushItemWidth(200);
             static int i12 = 0;
@@ -209,6 +209,20 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 			ImGui::SliderInt(" Special", &numSymbols, 0, 5);
             ImGui::PopItemWidth();
 
+            ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.2f, 0.2f, 0.2f, 1));
+            ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.3f, 0.3f, 0.3f, 1));
+            ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.3f, 0.3f, 0.3f, 1));
+
+            ImGui::SetCursorPos(ImVec2(870, 5));
+            if (ImGui::Button("X", ImVec2(30, 30))) {
+                PostQuitMessage(0); 
+            }
+
+            ImGui::PopStyleColor(3);
+
+            ImGui::PushStyleColor(ImGuiCol_Button, btn);
+            ImGui::PushStyleColor(ImGuiCol_ButtonHovered, btn_hover);
+
             //assign generated password to currentPassword variable
             ImGui::SetCursorPos(ImVec2(500,100));
             if (ImGui::Button("Generate", ImVec2(200, 30))) {
@@ -233,10 +247,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
             ImGui::SetCursorPos(ImVec2(50,425));
             ImGui::Text("Made by @Plowh");
 
-            ImGui::SetCursorPos(ImVec2(870, 5));
-            if (ImGui::Button("X", ImVec2(30, 30))) {
-                PostQuitMessage(0); 
-            }
             ImGui::PopFont();
             ImGui::PopStyleColor();
             ImGui::PopStyleColor();
