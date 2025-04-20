@@ -14,6 +14,8 @@ Vaultify is a password generator tool that allows users to customize the length 
 - DirectX 11 SDK
 - ImGui Library
 
+![image](https://github.com/user-attachments/assets/a4be16ed-c530-4b2a-8560-9f8edc001c0e)
+
 ## Code Overview
 
 Below are important snippets of the code that demonstrate how the program works:
