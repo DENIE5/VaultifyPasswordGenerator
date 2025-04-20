@@ -1,4 +1,4 @@
-# Vaultify - Password Generator
+# Vaultify
 
 Vaultify is a password generator tool that allows users to customize the length and character types of the generated password. The application uses a simple graphical user interface (GUI) built with **ImGui** and **DirectX 11** for rendering.
 
