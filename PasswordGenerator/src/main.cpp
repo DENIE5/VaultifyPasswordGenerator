@@ -49,7 +49,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     //ImGui_ImplWin32_EnableDpiAwareness();
     WNDCLASSEXW wc = { sizeof(wc), CS_CLASSDC, WndProc, 0L, 0L, GetModuleHandle(nullptr), nullptr, nullptr, nullptr, nullptr, L"ImGui Example", nullptr };
     ::RegisterClassExW(&wc);
-    HWND hwnd = ::CreateWindowW(wc.lpszClassName, L"Vaultify - Password Generator", WS_POPUP | WS_VISIBLE, 100, 100, 1600, 720, nullptr, nullptr, wc.hInstance, nullptr);
+    HWND hwnd = ::CreateWindowW(wc.lpszClassName, L"Vaultify - Password Generator", WS_POPUP | WS_VISIBLE, 100, 100, 900, 500, nullptr, nullptr, wc.hInstance, nullptr);
 
     // Initialize Direct3D
     if (!CreateDeviceD3D(hwnd))
@@ -107,7 +107,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     //IM_ASSERT(font != nullptr);
 
     io.Fonts->AddFontDefault();
-    ImFont* mainFont = io.Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\Arial.ttf", 30.0f);
+    ImFont* mainFont = io.Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\Arial.ttf", 20.0f);
     IM_ASSERT(mainFont != NULL);
 
     // Our state
@@ -167,7 +167,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
             static float f = 0.0f;
             static int counter = 0;
 
-            ImGui::Begin("Vaultify", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);     //ImGuiWindowFlags_NoTitleBar  - removes native imgui titlebar
+            ImGui::Begin("Vaultify", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar);     //ImGuiWindowFlags_NoTitleBar  - removes native imgui titlebar
             
             
             ImGui::PushFont(mainFont);
@@ -181,56 +181,62 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
             ImGui::PushStyleColor(ImGuiCol_Button, btn);
             ImGui::PushStyleColor(ImGuiCol_ButtonHovered, btn_hover);
 
-            ImGui::SetCursorPos(ImVec2(200,140));
-            ImGui::PushItemWidth(352);
+            ImGui::SetCursorPos(ImVec2(50,50));
+            ImGui::PushItemWidth(200);
             static int i12 = 0;
-            ImGui::SliderInt(" Lowercase Letters", &numLowercaseLetters, 0, 10);
+            ImGui::SliderInt(" Lowercase", &numLowercaseLetters, 0, 5);
             ImGui::PopItemWidth();
 
 			// Amount of uppercase letters
-            ImGui::SetCursorPos(ImVec2(200,240));
-            ImGui::PushItemWidth(352);
+            ImGui::SetCursorPos(ImVec2(50,100));
+            ImGui::PushItemWidth(200);
             static int i14 = 0;
-			ImGui::SliderInt(" Uppercase Letters", & numUppercaseLetters, 0, 10);
+			ImGui::SliderInt(" Uppercase", & numUppercaseLetters, 0, 5);
             ImGui::PopItemWidth();
 
 			// Amount of numbers
-            ImGui::SetCursorPos(ImVec2(200,340));
-            ImGui::PushItemWidth(352);
+            ImGui::SetCursorPos(ImVec2(50,150));
+            ImGui::PushItemWidth(200);
             static int i16 = 0;
-			ImGui::SliderInt(" Numbers", &numNumbers, 0, 10);
+			ImGui::SliderInt(" Numbers", &numNumbers, 0, 5);
             ImGui::PopItemWidth();
 
 			// Amount of special characters
-            ImGui::SetCursorPos(ImVec2(200,440));
-            ImGui::PushItemWidth(352);
+            ImGui::SetCursorPos(ImVec2(50,200));
+            ImGui::PushItemWidth(200);
+            
             static int i19 = 0;
-			ImGui::SliderInt(" Special Characters", &numSymbols, 0, 10);
+			ImGui::SliderInt(" Special", &numSymbols, 0, 5);
             ImGui::PopItemWidth();
 
             //assign generated password to currentPassword variable
-            ImGui::SetCursorPos(ImVec2(1000,240));
-            if (ImGui::Button("Generate Password", ImVec2(400, 56))) {
+            ImGui::SetCursorPos(ImVec2(500,100));
+            if (ImGui::Button("Generate", ImVec2(200, 30))) {
 				currentPassword = generatePassword(numLowercaseLetters, numUppercaseLetters, numNumbers, numSymbols, 
                 lowercaseLetters, uppercaseLetters, numbers, symbols);
 
             }
 
-            ImGui::SetCursorPos(ImVec2(1000,340));
-            if (ImGui::Button("Copy to Clipboard", ImVec2(400, 56))) {
+            ImGui::SetCursorPos(ImVec2(500,150));
+            if (ImGui::Button("Copy to Clipboard", ImVec2(200, 30))) {
                 ImGui::SetClipboardText(currentPassword.c_str());
             }
 
-            ImGui::SetCursorPos(ImVec2(1000, 140));
+            ImGui::SetCursorPos(ImVec2(500, 50));
             ImGui::Text("Generated Password: %s", currentPassword.c_str()); //display generated password once button is clicked
 
-            ImGui::SetCursorPos(ImVec2(1000, 440));
-            if(ImGui::Button("Save Password", ImVec2(400, 56))) {
+            ImGui::SetCursorPos(ImVec2(500, 200));
+            if(ImGui::Button("Save Password", ImVec2(200, 30))) {
                 savePassword(currentPassword);
             }
 
-            ImGui::SetCursorPos(ImVec2(30,650));
+            ImGui::SetCursorPos(ImVec2(50,425));
             ImGui::Text("Made by @Plowh");
+
+            ImGui::SetCursorPos(ImVec2(870, 5));
+            if (ImGui::Button("X", ImVec2(30, 30))) {
+                PostQuitMessage(0); 
+            }
             ImGui::PopFont();
             ImGui::PopStyleColor();
             ImGui::PopStyleColor();
