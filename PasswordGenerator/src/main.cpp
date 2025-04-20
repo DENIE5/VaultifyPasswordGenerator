@@ -71,16 +71,16 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
 
     // Setup Dear ImGui style
-    ImGuiStyle* style = &ImGui::GetStyle();
-    ImVec4* colors = style->Colors;
-    // background
-    colors[ImGuiCol_WindowBg] = ImVec4(0.2f, 0.2f, 0.2f, 1.0f);
+    ImGuiStyle& style = ImGui::GetStyle();
+    style.FrameRounding = 8.0f;
+    style.GrabRounding = 8.0f;
+    style.Colors[ImGuiCol_WindowBg] = ImVec4(0.15f,0.15f,0.15f,1.0f);
 
     //slider styles
-    ImVec4 track      = ImVec4(0.2f, 0.2f, 0.2f, 1.0f); 
+    ImVec4 track= ImVec4(0.2f, 0.2f, 0.2f, 1.0f); 
     ImVec4 track_hover= ImVec4(0.3f, 0.3f, 0.3f, 1.0f); 
     ImVec4 track_active=ImVec4(0.4f, 0.4f, 0.4f, 1.0f); 
-    ImVec4 grab       = ImVec4(0.4f, 0.4f, 0.9f, 1.0f); 
+    ImVec4 grab= ImVec4(0.4f, 0.4f, 0.9f, 1.0f); 
     ImVec4 grab_active= ImVec4(0.5f, 0.5f, 1.0f, 1.0f);  
      
     //button styles
