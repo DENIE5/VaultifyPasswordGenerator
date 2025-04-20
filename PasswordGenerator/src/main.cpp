@@ -73,14 +73,19 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     // Setup Dear ImGui style
     ImGuiStyle* style = &ImGui::GetStyle();
     ImVec4* colors = style->Colors;
-    
+    // background
     colors[ImGuiCol_WindowBg] = ImVec4(0.2f, 0.2f, 0.2f, 1.0f);
-    ImVec4 track      = ImVec4(0.2f, 0.2f, 0.2f, 1.0f); // default track
-    ImVec4 track_hover= ImVec4(0.3f, 0.3f, 0.3f, 1.0f); // when hovered
-    ImVec4 track_active=ImVec4(0.4f, 0.4f, 0.4f, 1.0f); // when dragging
-    ImVec4 grab       = ImVec4(0.64f, 0.64f, 0.64f, 1.0f); // the knob
-    ImVec4 grab_active= ImVec4(0.8f,  0.8f,  0.8f,  1.0f);  // knob while dragging
+
+    //slider styles
+    ImVec4 track      = ImVec4(0.2f, 0.2f, 0.2f, 1.0f); 
+    ImVec4 track_hover= ImVec4(0.3f, 0.3f, 0.3f, 1.0f); 
+    ImVec4 track_active=ImVec4(0.4f, 0.4f, 0.4f, 1.0f); 
+    ImVec4 grab       = ImVec4(0.4f, 0.4f, 0.9f, 1.0f); 
+    ImVec4 grab_active= ImVec4(0.5f, 0.5f, 1.0f, 1.0f);  
      
+    //button styles
+    ImVec4 btn      = ImVec4(0.4f, 0.4f, 0.9f, 1.0f);  
+    ImVec4 btn_hover= ImVec4(0.5f, 0.5f, 1.0f, 1.0f);
     // Setup Platform/Renderer backends
     ImGui_ImplWin32_Init(hwnd);
     ImGui_ImplDX11_Init(g_pd3dDevice, g_pd3dDeviceContext);
@@ -166,11 +171,15 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
             
             
             ImGui::PushFont(mainFont);
-            ImGui::PushStyleColor(ImGuiCol_FrameBg,         track);        // the bar background
-            ImGui::PushStyleColor(ImGuiCol_FrameBgHovered,  track_hover);  // when mouse over bar
-            ImGui::PushStyleColor(ImGuiCol_FrameBgActive,   track_active); // when bar is clicked
-            ImGui::PushStyleColor(ImGuiCol_SliderGrab,      grab);         // the knob
-            ImGui::PushStyleColor(ImGuiCol_SliderGrabActive,grab_active);
+
+            ImGui::PushStyleColor(ImGuiCol_FrameBg, track);        
+            ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, track_hover);  
+            ImGui::PushStyleColor(ImGuiCol_FrameBgActive, track_active); 
+            ImGui::PushStyleColor(ImGuiCol_SliderGrab, grab);         
+            ImGui::PushStyleColor(ImGuiCol_SliderGrabActive, grab_active);
+
+            ImGui::PushStyleColor(ImGuiCol_Button, btn);
+            ImGui::PushStyleColor(ImGuiCol_ButtonHovered, btn_hover);
 
             ImGui::SetCursorPos(ImVec2(200,140));
             ImGui::PushItemWidth(352);
@@ -223,6 +232,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
             ImGui::SetCursorPos(ImVec2(30,950));
             ImGui::Text("Made by @Plowh");
             ImGui::PopFont();
+            ImGui::PopStyleColor();
+            ImGui::PopStyleColor();
             ImGui::PopStyleColor();
             ImGui::PopStyleColor();
             ImGui::PopStyleColor();
